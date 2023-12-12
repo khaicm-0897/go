@@ -189,3 +189,147 @@ Some high-level languages are compiled, others are interpreted, and some are in 
 
 ![image](./images/program-language-classification.png)
 
+#### 6.2. Machine language
+
+To speak to the processing unit of a computer, we can use a machine language. Machine languages are composed exclusively of zeros and ones. An instruction written in a machine language is a suite of 0 and 1. Each processor (or family of processors) will define a list of instructions called the instruction set. There is an instruction to add to the number, increment by one, decrement by one, copy data from one location in memory to another place...etc.
+
+It’s possible to write computer programs directly into machine language. However, this is not easy.
+
+#### 6.3. Assembly language
+
+The assembly language is a **low-level programming language**. The instructions of a program written in an assembly language correspond to machine instructions. Assembly languages use mnemonics which are small words that will correspond to a machine instruction. For instance 
+MOV Will instruct the machine to move data from one location to another location. Developers can also comment the code (which is not possible with machine language).
+
+To create a program in assembly language, the developer will write instruction to one or several files. Those files are named **source files**.
+
+Here is an example of an instruction written in x86 Linux assembly:
+
+```go
+// assembly code
+mov    eax,1
+int    0x80
+```
+
+Those two lines will perform a system call that will close the program (the “1” represent the system call number that means “exit the program”). Note that assembly language is different from machine to machine. We say that it’s machine-specific.
+
+An assembler is used to convert the source files written in an assembly language to object code files. We say that we assemble the program. The linker will then transform those object code files into an executable file. An executable file contains all the computer’s necessary instructions to launch the program.
+
+![image](./images/from_assembly_code_to_executable.png)
+
+#### 6.4. High-level languages
+
+There are plenty of high-level languages on the market, like Go. Those languages are not closely bound to machine architecture. They offer a convenient way to write instructions. For instance, if we want to make a system call to exit our program, we can write in go :
+
+```go
+os.Exit(1)
+```
+
+With the C language, we can write :
+
+```c
+exit(1)
+```
+
+With Java, we can write :
+
+```java
+System.exit(1);
+```
+
+In this example, we do not have to move a number into a register; we use the languages constructs (functions, packages, methods, variables, types ...). The objective of this book is to give you precise and concise definitions of those tools to build Go applications.
+
+High-level programs are also written to files. Files are named “source files”. Generally, programming languages require adding a specific extension to the filename. For Go programs we will add “.go” At the end of each file that we will write. In PHP the extension is “.php”.
+
+When source files are written, the program that they define cannot be executed immediately. The source file needs to be compiled by using a compiler. The compiler will transform source files into an executable. The compiler is also a program. Go is part of the compiled language family.
+
+![image](./images/go-compile-language.png)
+
+##### 6.4.1. Compiled vs. Interpreted
+
+Note that some programming languages are interpreted. When the source files have been written, the programmer does not need to compile the sources. With the source files ready, the system can execute the program thanks to an interpreter. Each instruction written into the source file is translated and executed by the interpreter. In some cases, interpreters are storing in a cache a compiled version of the program to boost performance (the source files are not translated each time). PHP, Python, Ruby, Perl are interpreted languages.
+
+### 7. Test yourself 
+
+#### 7.1. Questions
+
+1. Where are programs stored?
+
+2. Reading data from a hard drive is slower than reading data from RAM. True or false?
+
+3. Can you write into the ROM? True or false?
+
+4. What are the two types of memory?
+
+5. What is the definition of “volatile memory”?
+
+6. Which program transforms code written assembly language into object code?
+
+7. Which program transforms object code into an executable file?
+
+8. Give two advantages of high-level languages compared to low-level languages?
+
+9. Go is an interpreted language? True or false?
+
+#### 7.2. Answers
+
+1. Where are programs stored?
+
+- Into the memory unit (MU)
+2. Reading data from a hard drive is slower than reading data from RAM. True or false?
+
+- True. Fetching and writing data to the RAM is blazing fast, whereas accessing data stored into hard drives generally takes longer.
+3. A computer user can write ROM? True or false?
+
+- False. This type of memory can only be read. It is used to store the OS (Operating system)
+4. What are the two types of memory?
+
+- The central memory
+
+- The auxiliary memory
+
+5. What is the definition of “volatile memory” ?
+
+- Volatile memory will be erased when the computer is switched off.
+6. Which program transforms code written assembly language into object code?
+
+- The assembler will take as input assembly language code and generate machine code.
+7. Which program transforms object code into an executable file?
+
+- The linker
+8. Give two advantages of high-level languages compared to low-level languages?
+
+- They offer high-level constructs that are easier to use.
+
+- The code will not be specific to the technical architecture of a machine. We say that the code is portable.
+
+9. Go is an interpreted language? True or false?
+
+- False: Go is a compiled language
+
+### 8. Key takeaways
+
+1. At the macro-level, a computer is composed of :
+
+- A memory unit (MU): to store data and programs
+
+- An Arithmetic and Logical Unit (ALU): to perform computation
+
+- An Input and Output Unit (IOU): to manage input devices and output devices.
+
+- A Control Unit (CU) will manage the MU, ALU, and IOU following the instruction given by the program executed
+
+2. CPU means Central Processing Unit (also called processor or microprocessor) is composed of the ALU and CU.
+
+3. A program is a set of instructions.
+
+4. Developers write programs with a programming language.
+
+5. Programming languages are composed of words and characters that must be ordered following specified rules.
+
+6. They are high and low-level programming languages.
+
+7. Machine language and assembly language are low-level. The instructions written in those languages are closely linked to the hardware organization and capabilities. They provide little abstractions.
+
+8. Go is a high-level programming language that is compiled.
+
+
