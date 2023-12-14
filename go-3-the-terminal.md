@@ -34,5 +34,32 @@ I strongly advise you to install this, because it will make your life easier eve
 
 ## 5. How to use the terminal
 
+After you opened your terminal, you will see a black window. This is the interface where you can type commands. This is not intuitive because to type commands; you have to know them before! Each command has a name. To launch a command, you will type its name, eventually type some options and then press enter. Let’s take an example.
 
+## 5.1. About the dollar symbol
 
+In the examples, you will see a line that begins with a dollar symbol. This is a convention; it means “type it into your terminal”, when you want to reproduce the examples do not type the dollar, just everything after it.
+
+## 6. Test yourself
+
+1. What is the command to list the contents of a directory?
+- ls (for UNIX sytems)
+- dir for Windows
+2. What is a terminal?
+- A terminal is a program that offers an interface to use a shell
+3. Give the name of a well-known shell.
+
+- bash
+ ## 7. Key takeaways
+
+- Graphical User Interfaces have not always existed
+
+- To interact with computers, we can use a Graphical Interface or a Command line Interface. (CLI)
+
+- To use a CLI, we have to open a terminal application that offers an interface to interact with a shell
+
+- Bash is a shell.
+
+- You can launch commands by typing the command name and eventually options, then press enter.
+
+- We will use the terminal to launch go-specific commands.
