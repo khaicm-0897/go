@@ -181,3 +181,46 @@ We need to define a common vocabulary to understand character encoding :
 - Character set: this a collection of distinct characters. Often you will see or hear the abbreviation “charset”.
 
 - Code point : each character from a character set has an equivalent numeric value that uniquely identify this character. This numeric value is a code point.
+
+## 6. Character sets and encoding
+
+There is one character set that you want to know : Unicode. It is a standard that lists the vast majority of characters from living languages that are used today on computers
+
+It is composed of 137,374 characters for it’s version 11.0. Unicode is like an enormous table that maps a character to a code point. For instance, the character “A” is mapped to the code point “0041”.
+
+With Unicode, we have our basis, our table of characters, now the next challenge is to find a way to encode those characters, to put those code point into bytes of data. This is precisely what ASCII and UTF-8 do.
+
+![image](./images/unicodepoint.png)
+![image](./images/compare_unicode_character.png)
+
+## 7. How ASCII works?
+
+- ASCII means American Standard Code for Information Interchange. It has been developed during the sixties. The objective was to find a way to encode characters used to transmit messages.
+
+ASCII encode characters on seven binary digits. Another binary digit is a parity bit. A parity bit is used to detect transmission errors. It’s added after the seven first bits, and its value is 0. If the number of ones is odd, then the parity bit is 1; if the number is even, it’s set to 0.
+
+A byte of data can store each character (8 bits). How many integers can you create with only 7 bits ? With one single bit, we can encode two values, 0 and 1, with 2 bits, we can encode four distinct values. When you add a bit, you multiply by two the number of values you can encode. With 7 bits, you can encode 128 integers. More generally, the number of unsigned integers you can encode with n binary digits is two at the power n.
+
+| Number of bits | Number of values |
+| ----------- | ----------- |
+| 1      | 2                |
+| 2      | 4                |
+| 3      | 8                |
+| 4      | 16               |
+| 5      | 32               |
+| 6      | 64               |
+| 7      | 128              |
+
+ASCII allows you to encode 128 different characters. For each character, we have a specific code point. Unsigned integer values represent code points.
+
+![image](./images/ascii_code.png)
+
+On the previous figure1, you can see the USASCII code chart. This table allows you to convert a byte into a character. For instance the letter B is equivalent to 1000010 (binary) (column 4, row 2)
+
+## 8. How UTF-8 works?
+
+- UTF-8 means Universal Character Set Transformation Format1 - 8 bits. It has been invented by two people that are also the creators of Go: Rob Pike and Ken Thompson! The design of this type of encoding is very ingenious. I will try to explain it briefly :
+
+UTF-8 is a variable width encoding system. It means that characters are encoded using one to four bytes (a byte represents eight binary digits).
+
+
