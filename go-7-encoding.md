@@ -223,4 +223,254 @@ On the previous figure1, you can see the USASCII code chart. This table allows y
 
 UTF-8 is a variable width encoding system. It means that characters are encoded using one to four bytes (a byte represents eight binary digits).
 
+![image](./images/utf8_system.png)
+
+On the figure 5 you can see the encoding rules of UTF-8. A character can be encoded on 1 to 4 bytes.
+
+The code points that can be encoded using only one byte are from U+0000 to U+007F (included). This range is composed of 128 characters. (from 0 to 127, there are 128 numbers2
+
+But more characters need to be encoded! That’s why the creators of UTF-8 had the idea of adding bytes to the system. The first additional byte begins with a one and a 0; those are fixed. It signals to decoders that we are now using 2 bytes to encode our characters we simply add the bits “110”. It says to UTF-8 decoders, “be careful; we are 2 !”.
+
+If we use 2 bytes, we have 11 bits free (8 * 2 - 5 (fixed bits) =11). We can encode the characters which have the Unicode code point from U+0080 to U+07FF included. How many characters does that represent?
+
+- 0080 in hex = 128 in decimal
+
+- 07FF in hex = 2047 in decimal
+
+- from 0080 to 07FF there are 2047-128+1=1920
+
+You might ask why do we add a one to the count... That’s because characters are indexed from the code point 0.
+
+If you use 3 bytes, then the first byte will start with the fixed bits 1110. This will signal to decoders that the character is encoded using 3 bytes. In other words, the next characters will begin after the third byte. The two additional bytes are beginning with 10. With three encoding bytes, you have 16 bits free (8 * 3 - 8 (fixed bits) =16). You can encode characters from U+0800 to U+FFFF.
+
+If you have understood how it works for 3 bytes, then you should have no problem to know how the system works with 4 bytes. Inside our first byte, we fix the five first bits (11110). Then we have three additional bytes. If we subtract the fixed bits from the total number of bits, we have 21 bits available. It means that we can encode code points from U+10000 to U+10FFFF.
+
+## 9. Strings
+
+A string is “a sequence of characters”. For instance "Test" is a string composed of 4 different characters: T, e, s, and t. Strings are prevalent; we use them to store raw text inside our program. They are generally readable by humans. For instance, the first name and the last name of an application user are two strings.
+
+Characters can come from different character sets. If you use the character set ASCII, you have to choose from 128 characters available.
+
+Each character has a corresponding code point in the character set. As we have seen before, the code point is an unsigned integer arbitrarily chosen. Strings are stored using bytes. Let’s take the example of a string composed only of ASCII characters :
+
+```bash
+Hello
+```
+
+A single byte can store each character. This string can be stored with the following bits :
+
+```bash
+01001000 01100101 01101100 01101100 01101111
+```
+
+![image](./images/string_to_binary.png)
+
+In Go strings are immutables, meaning that they cannot be modified once created.
+
+## 10. String literals
+
+There are two “types” of strings literals :
+
+- raw string literals. They are defined between back quotes.
+
+    - Forbidden characters are
+
+        - back quotes
+    - Discarded characters are
+
+        - Carriage returns (\r)
+- interpreted string literals. They are defined between double-quotes.
+    - Forbidden characters are
+        - new lines
+
+        - unescaped double quotes
+
+```go
+// /hexadecimal-octal-ascii-utf8-unicode-runes/string-literals/main.go
+package main
+
+import "fmt"
+
+func main() {
+
+    raw := `spring rain:
+browsing under an umbrella
+at the picture-book store`
+    fmt.Println(raw)
+
+    interpreted := "i love spring"
+    fmt.Println(interpreted)
+}
+```
+
+You can note that inside this snippet of code, we did not say to Go which character set we use. This is because string literals are **implicitly encoded using UTF-8**.
+
+## 11. Runes
+
+Behind the scene, a string is a collection of bytes. We can iterate over the bytes of a string with a for loop:
+
+```go
+package main
+import "fmt"
+
+func main() {
+	s := "ぶん Golang"
+	for _, v := range s {
+		// v is of type rune
+		fmt.Printf("Unicode code point : %U - character '%c' - binary %b - hex %X - Decimal %d\n ", v, v, v, v, v)
+	}
+}
+```
+
+This program will iterate over each character of the string. Inside the for loop v is of type *rune*.*rune* is a built-in type that is defined as follow :
+
+```go
+// rune is an alias for int32 and is equivalent to int32 in all ways. It is
+// used, by convention, to distinguish character values from integer values.
+type rune = int32
+```
+
+A **rune** represent a Unicode code point.
+
+- Unicode code points are numeric values.
+
+- By convention, they are always noted with the following format: **"U+X"** where X is the hexadecimal representation of the code point. *X* should have four characters.
+
+If X has less than four characters, we add zeros.
+
+Ex: The character **"o"** has a code point equal to **111** (in decimal). 111 in hexadecimal is written 6F. The decimal code point is **U+006F**
+
+To print the code point in the conventional format, you can use the format verb "**%U"**.
+
+![image](./images/unicode_point_string.png)
+
+Note that you can create a rune by using simple quotes :
+
+```go
+// /hexadecimal-octal-ascii-utf8-unicode-runes/rune/main.go
+package main
+
+import "fmt"
+
+func main(){
+    var aRune rune = 'Z'
+    fmt.Printf("Unicode Code point of &#39;%c&#39;: %U\n", aRune, aRune)
+}
+```
+
+## 12. Test yourself
+
+1. True or false : “785G” is an hexadecimal numeral
+
+
+- False
+
+- The letter G cannot be part of hexadecimal numbers.
+
+- However, the letters A to F can be part of a hexadecimal number.
+
+2. True or false : “785f” and “785F” represent the same quantity
+
+- This is true
+
+- The fact that a letter is capitalized does not change its signification.
+
+3. What is the formatting verb to represent a hexadecimal number (with a capitalized letter)?
+
+- %X
+
+4. What is the formatting verb to represent a number in decimal?
+
+- %d
+
+5. What is a code point?
+
+- A code point is a numeric value that identifies a character in a character set
+
+6. Fill the blanks. _______ is a character set, ______ is an encoding standard.
+
+- **Unicode** is a character set, **UTF-8** is an encoding standard.
+
+7. True or false: UTF-8 allows you to encode fewer characters than ASCII.
+
+- False
+
+8. How many bytes can I use to encode a character using the UTF-8 encoding system?
+
+- From 1 to 4 bytes
+
+- It depends on the character
+
+## 13. Key takeaways
+
+- Hexadecimal is a numeration system like decimal and binary
+
+- With hexadecimal, a number is represented using 16 characters :
+
+    - 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
+- With fmt functions (fmt.Sprintf and fmt.Printf) you can use “formatting verbs” to represent a number using a specific numeral system
+
+    - %b for binary
+
+    - %X and%x for hexadecimal
+
+    - %d for decimal
+
+    - %o for octal
+
+- **Character** This is something that can be written by our hand, which conveys a signification. Ex: “-”, “A” , “a”
+
+- **Character set**: this a collection of distinct characters. Often you will see or hear the abbreviation “charset”.
+
+- **Code point** : each character from a character set as an equivalent numeric value that uniquely identify this character. This numeric value is a code point.
+
+- Unicode is a character set that is composed of 137.000 + characters.
+
+- Each character has a code point. For instance"A" character is equivalent to the code point U+0041
+
+- ASCII is an encoding technique that can encode only 128 characters.
+
+- UTF-8 is an encoding technique that can encode more than 1 million characters
+
+- With UTF-8, any character is encoded using 1 to 4 bytes.
+
+- **rune** is a builtin type
+
+- A rune represents the Unicode code point of a character.
+
+- To create a rune, you can use simple quotes :
+
+```bash
+var aRune rune = 'Z'
+```
+
+- When you iterate over a string, you will iterate over runes.
+
+```go
+// /hexadecimal-octal-ascii-utf8-unicode-runes/iterate-over-string/main.go
+package main
+
+import "fmt"
+
+func main() {
+    b := "hello"
+    for i := 0; i < len(b); i++ {
+        fmt.Println(b[i])
+    }
+    // will output :
+    // 104
+    // 101
+    // 108
+    // 108
+    // 111
+    // and NOT :
+    // h
+    // e
+    // l
+    // l
+    // o
+}
+```
+
+- In Go, strings are immutable, meaning that they cannot be changed once created.
 
