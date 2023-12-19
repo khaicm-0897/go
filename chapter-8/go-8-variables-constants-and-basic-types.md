@@ -412,3 +412,57 @@ Naming variables and constants is not an easy task. When you choose a name, you 
 - descriptionString is bad, description is better
 
 - Go is already statically typed; you do not need to give the type information to the reader. (In some loosely typed language, it’s sometimes necessary to avoid confusion)
+
+## 10. Test yourself 
+
+1. What is an identifier?
+
+- An identifier is a set of characters composed of letters and digits.
+2. By which type of character should an identifier begin?
+
+- A letter or an underscore.
+3. What is the type of a variable?
+
+- The type of a variable is the set of permissible variable values.
+4. What is a byte?
+
+- A byte is composed of 8 binary digits
+5. When you declare a variable of type bool. What is its value (right after initialization)?
+
+- false. When you declare a variable, it is initialized to its type’s default value.
+6.What are the three characteristics of an untyped constant?
+
+- It has no type
+
+- It has a default type
+
+- It has no limit
+
+## 11. Key takeaways
+
+- The name of a variable or constant is called an identifier
+
+- Identifiers are generally written using camelCase
+
+- Variables and constants allow you to save a value in memory
+
+- Constants are immutable, meaning that we cannot change their value during program execution
+
+- Variables have a type, which defines the set of values they can hold
+
+- When you create a variable, its value is initialized with the zero value of its type
+
+    - This one is super important...
+
+    - It can be a source of mistakes.
+
+    - There are NO uinitialized variables in Go.
+
+- There are two flavors of constants
+
+    - Typed
+
+    - Untyped
+
+        - Have no type but a default one and can overflow their default type.
+
