@@ -207,3 +207,49 @@ With a for loop, you can repeat the execution of instructions. The number of rep
 ### 9.2. Syntax
 
 ![image](../images/for_statement_with_clause_syntax.png)
+
+- The first value of i is 0 and not 1; remember that our init statement is i := 0.
+
+- If the init statement is i := 1 The first value of i is 1. The first sentence printed on screen would be interation N° 1
+
+    - This is often deconcerting for beginners. In the real world, when we start an enumeration with the value one and not 0!
+
+    - This is (often) not the case in computer science. Indexes usually start with the value 0.
+
+- For loops with range clauses are used intensively.
+
+
+## 10. Test yourself
+
+1. What is a boolean expression?
+
+- A “boolean expression” is an expression that produces a boolean value when evaluated1
+
+- An expression is a syntactic entity in a programming language that may be evaluated to determine its value.
+
+2. Enumerate four boolean operators.
+
+- **==**
+- **!=**
+- **<**
+- **<=**
+- **>**
+- **>=**
+
+## 11. Key takeaways
+
+- A boolean is a type that can be equal to **true** or **false**
+    - There is no in-between
+- By default, a boolean is **false**. (This is the zero values of booleans in Go)
+- A boolean expression produces a boolean.
+- Conditional constructs will use boolean expressions
+- The most used conditional constructs are :
+    - if / else
+
+    - if without else
+
+    - switch case
+
+    - for loops
+- if / else if / else constructs might be hard to read/understand (maybe use a switch case ?)
+- You will often see an “if without else” construct in Go code (usually to check errors)
