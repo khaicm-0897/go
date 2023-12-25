@@ -316,6 +316,148 @@ func printDetails(roomNumber, size, nights int) {
     fmt.Println(roomNumber, ":", size, "people /", nights, " nights ")
 }
 ```
+Here is our main function :
+
+```go
+// package-imports/trial-error-3/main.go
+package main
+
+import "thisIsATest2/room"
+
+func main() {
+    room.printDetails(112, 3, 2)
+}
+```
+If we compile, we got another error :
+
+```go
+./main.go:6:2: cannot refer to unexported name room.printDetails
+./main.go:6:2: undefined: room.printDetails
+```
+
+It gives us an indication: we are unable to call the function because it’s unexported... We need to export the function to make it visible to others! To do that in Go, you have to use a capital letter on the first letter of the function.
+
+### 10.1. Key Takeaways
+
+- A function, a variable, and a constant if **not exported** is **private** to the package where it is defined
+
+- To **export something** just transform the first letter of its identifier to a capital letter
+
+## 11. Import Path & Import declaration
+
+To import a package into another package, you need to know its import path. We will see how to determine it in the first section.
+
+When you know the import path, you have to write an import declaration. This is the object of the next section.
+
+### 11.1. Import path
+
+The Go specifications do not strictly specify the import path. The import path is a string that must uniquely identify a module among all the existing modules. The build system will use them to fetch the source code of your imported packages and build your program. Today the Go build system (which code live in the package go/build rely on different types of path :
+- Standard library path
+
+    - The source files that we will use to build your program are located by default in /usr/local/go/src (for Linux and Mac users) and in C:\Go\src for windows users
+- URL that points to a code-sharing website.
+    - Go has out-of-the-box support for the following code-sharing websites that use Git as a version control system (VCS): Github, Gitlab, Bitbucket.
+    - The URL can be exposed on the internet (for instance, an open-source project hosted on Github)
+    - It can also be only exposed in your local/company network
+- Local path or relative path
+    - When Go has introduced modules, this type of import path is no longer the norm, even if the Go build system supports it.
+When downloading the package go will check the type of VCS system used in the HTTP response (inside a meta tag). If it’s not provided, you should add to the import path the type of VCS system used. Here is an example from Go official documentation:
+
+> example.org/repo.git/foo/bar
 
 
+### 11.2. Import with an explicit package name
 
+You can also give your package an alias (a sort of surname for the package) to call its exported elements with this alias. For instance :
+
+> import bar "gitlab.com/loir402/foo"
+
+Here we say that the package has the surname bar. You can use the exported types, functions, variables, and constants of the package foo (which import path is “gitlab.com/loir402”) with the qualifier bar like this :
+
+> bar.MyFunction()
+
+### 11.3. Import with a dot
+
+> import ."gitlab.com/loir402/foo"
+
+With this syntax, all the functions, types, variables, and constants will be declared in the current package. As a consequence, all the exported identifiers of the package can be used without any qualifier. I do not recommend using this because it can become confusing.
+
+### 11.4. The blank import
+
+With a blank import, just the package’s init function will be called. A blank import can be specified with the following syntax :
+
+> import _ "gitlab.com/loir402/foo"
+
+## 12. The internal directory
+
+When you create a package and when your program is available on a code-sharing site (like Github, Gitlab ...), other developers will be able to use your package.
+
+This is a great responsibility for you. Other programs will rely on your code. It means that when you change a function or the name of an Exported identifier, other code might break.
+
+To forbid the import of packages, you can put them into a directory called “internal”.
+
+![image](../images/usage_internal_directory.png)
+
+In the figure, you can see an example directory structure with an internal directory :
+
+- cmd/main.go contain the main package and the main function
+
+- internal/booking is the directory of the package booking.
+
+- internal/booking/booking.go is a source file of the package booking.
+
+- Any exported identifiers inside the booking package are accessible into the current program (ie. we can call a function from booking package into package main)
+
+- BUT, other developers will not be able to use it in their program.
+
+## 13. Test yourself
+
+1. What the following line does:import _ "github.com/go-sql-driver/mysql" ?
+
+- This is a blank import declaration.
+
+- It is said to be blank because of the underscore character_.
+
+- All init functions of the package github.com/go-sql-driver/mysqlwill be run
+
+2. What is the syntax to import a package with an alias?
+
+- import goq "github.com/PuerkitoBio/goquery"
+
+3. How can you share your Go code with others?
+
+- Create a git repository on a code hosting website (like Github, GitLab, bitbucket ...)
+
+- Let say that you created the repository gitlab.com/loir402/foo
+Initialize your module (withgo mod init gitlab.com/loir402/foo)
+
+- It will create a go.mod file at your project’s root.
+Push your code to the hosting website.
+
+- Share it with your colleagues and friends who will import it.
+
+- Note that you can also send your code by email or via physical mail, but it might be not optimal :)
+
+4. How to spot exported identifiers in a package?
+
+- Their first letter is capitalized
+
+- On the contrary unexported identifiers have not a first letter capitalized
+
+    - ex:const FontSize = 12 is an exported constant identifier
+
+    - ex:const emailLengthLimit = 58 is an unexported constant identifier
+
+## 14. Key takeaways
+
+- A package is a group of source files that live in the same directory
+
+- A name identifies a package
+
+- Identifiers with a first letter uppercase are exported.
+
+- An exported identifier can be used in any other packages.
+
+- Packages that live inside an internal directory can be used inside packages of your module. However, they cannot be used by other modules.
+
+- A module is “a collection of Go packages stored in a file tree with a go.mod file at its root”
