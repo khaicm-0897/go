@@ -161,6 +161,7 @@ We have three packages: room, invoice, and currency, along with a main.go file (
 Here is the go.mod file :
 
 ```go
+// run go mod init maximilien-andile.com/packageInit/rules
 module maximilien-andile.com/packageInit/rules
 
 go 1.13
@@ -278,3 +279,71 @@ What we can note in the log is that packages are initialized in a specific order
 This initialization sequence is following the dependencies of our main package. It begins with the package at the end of the dependency graph, which is the package currency
 
 ![image](../images/dependency_graph.png)
+
+## 5. Order of variables initialization
+
+Let’s see how to determine which variable will be initialized first. Here is a package with three variables and an init function :
+
+The first variable initialized does not depend on anything (except package fmt). It is the first to be initialized. Then the variable b (which depends on variable a) is initialized. When b is initialized, we can initialize c.
+
+Variables are not initialized from top to bottom: here, a is initialized first, but it is put in the second position in the source file.
+
+When the runtime launches the initialization process for a package it will proceed by “cycle”. Each variable has an attribute “ready for initialization”. A variable is considered to be “ready” for initialization when :
+
+1. It is not yet initialized
+
+2. It has no initialization expression OR Its initialization expression has no dependencies on uninitialized variables.
+
+- During the first cycle, the runtime will select: the earliest variable in declaration order AND ready for initialization.
+
+- When the first cycle is completed, the second cycle is launched: Go will select the variable that is earliest in declaration order AND ready for initialization.
+
+- The third cycle will do the same.
+
+- The fourth will also do the same...
+
+- etc...
+
+
+![image](../images/variable_initiazation.png)
+
+## 6. Test yourself
+
+1. What is the name of the function that will initialize a package? How many parameters this function have? How many results?
+- Here is an example (empty init function) :
+```go
+func init() {
+}
+```
+- No results, no parameters!
+2. Initialization functions are mandatory in each package. True or False?
+
+- False
+
+- Init functions are optional
+
+3. Is it possible to have four initialization functions in a package?
+
+- False.
+
+- Init functions are called after variable initialization.
+
+4. The runtime can run several initialization functions potentially at the same time. True or False?
+
+- False they are run sequentially (one after another)
+
+5. If package A imports package B, which initialization functions are run first ?
+
+- The runtime will run init functions from package B before those of package A
+
+## 7. Key takeaways
+
+- Initialization of packages takes place in init functions.
+
+- init functions are not mandatory.
+
+- A package can declare several init functions.
+
+- init functions are called after variable initialization.
+
+- init functions are run sequentially.

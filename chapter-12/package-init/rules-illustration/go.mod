@@ -1,3 +1,3 @@
-module maximilien-andile.com/packageInit/rules/invoice
+module maximilien-andile.com/packageInit/rules
 
 go 1.18

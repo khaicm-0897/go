@@ -1,7 +1,7 @@
 package main
 
 import (
-    "fmt"
+	"fmt"
     "maximilien-andile.com/packageInit/rules/invoice"
 )
 
