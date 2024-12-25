@@ -256,8 +256,223 @@ Here we create a value of type Country and we set the field Name with “Belgium
 
 **This syntax has to be used carefully.**
 
+#### 7.2.1. Field values need to be specified in the same order as in the type struct declaration
 
+```go
+type Country struct {
+    Name        string
+    CapitalCity string
+}
+japan := Country{
+    "Tokyo",
+    "Japan",
+}
+```
 
+This code will compile, but there is an error. The value of Country.Name will be “Tokyo” (not “Japan”)
 
+#### 7.2.2. You cannot skip a field
 
+```go
+// WILL NOT COMPILE
+china := Country{
+    "China",
+}
+```
+When you use this syntax, you should initialize all fields.
+
+#### 7.2.3. Do not mix the two syntaxes!
+
+```go
+// WILL NOT COMPILE
+greece := Country{
+    Name: "Greece",
+    "Athens",
+}
+```
+
+## 8. How to access a field: selector expression
+
+![image](../images/access_to_value.png)
+
+To access the value of a field, use the character **"."**.
+
+```go
+usa := Country{
+    Name: "United Sates of America",
+}
+usa.CapitalCity = "Washington DC"
+```
+You can, of course, also access the value of a specific field :
+
+```go
+if usa.Name == "France" {
+  fmt.Println("we have an error !")
+}
+```
+
+## 9. Embedded fields
+
+In a type struct, we can add embedded fields. Embedded fields are defined implicitly.
+
+```go
+type Hotel struct {
+    Name     string
+    Capacity uint8
+    Rooms    uint8
+    Smoking  bool
+    Country
+}
+
+type Country struct {
+    Name        string
+    CapitalCity string
+}
+```
+
+In the type struct Hotel we have an embedded field Country.Country is another type struct.
+
+Embedded fields have no explicit name. The field name is the type name.
+
+![image](../images/embedded_field.png)
+
+## 9.1. Pointer type
+
+In the preceding section, we have seen that we can embed a type into a type struct. We can also embed a pointer type into a type struct :
+
+```go
+type Hotel struct {
+    Name string
+    *Country
+}
+
+type Country struct {
+    Name        string
+    CapitalCity string
+}
+```
+
+Here we embed the type ***Country** (pointer to an element of type Country). The field name is the type name : Country :
+
+```go
+hotel := Hotel{
+    Name:    "Hotel super luxe",
+    Country: &Country{Name: "France"},
+}
+fmt.Println(hotel.Country.Name)
+```
+
+The name of the field is also Country.
+
+## 10. Usage of embedded fields
+
+The embedded field name will be it’s type. Let’s take an example:
+
+```go
+// types/embedded/main.go
+package main
+
+import "fmt"
+
+type Hotel struct {
+    Name string
+    Country
+}
+
+type Country struct {
+    Name        string
+    CapitalCity string
+}
+
+func main() {
+    hotel := Hotel{
+        Name:    "Hotel super luxe",
+        Country: Country{Name: "France"},
+    }
+    fmt.Println(hotel.Country.Name)
+}
+```
+
+Here the type struct **Hotel** has two fields :
+
+- One explicit field : **Name** (of type string)
+
+- And an implicit, embedded field : **Country**
+
+The name of the embedded field is its type name.
+
+## 11. Test Yourself
+
+1. Give an example of an array type literal.
+
+- [123]uint64
+
+2. What are the differences between basic types and composite types?
+
+- A basic type is predeclared in Go. To use it, you do not have to declare it.
+- A composite type is not predeclared, you can declare it by using a type literal
+
+3. In a program, you find the following code : type Switch bool. What is the type name? What is the underlying type?
+
+- Type name is Switch
+
+- The underlying type is bool
+
+4. uint8 is a composite type. True or False?
+
+- False. uint8 is a predeclared simple type.
+
+- It is not composite; it is not composed with other types.map[uint8]string is a composite type.
+
+5. What is the name of an embedded field of type T ? of type *T?
+
+- T
+
+## 12. Key Takeaways
+
+- A type is a set of values with operations and methods specific to those values.
+
+- Go predeclares basic types that you can use to create composite types
+
+- Composite types are constructed with type literals
+
+- Composite types are:
+
+- array, struct, pointer, function, interface, slice, map, and channel types
+Type structs allow you to group data together with fields. Each field of a struct has a type and a name (an identifier)
+
+- We can specify fields of a struct explicitly or implicitly.
+
+- Implicitly: you embed a type into the struct type, the field is then called an “Embedded Fields”
+
+```go
+type Country struct {
+    Name        string
+    CapitalCity string
+}
+
+type Hotel struct {
+    Name     string
+    Country
+}
+```
+
+Name is a field specified explicitly
+
+Country is a type struct. It is also a field of the type struct Hotel , it’s an embedded field
+
+- To select a value from a type struct variable, you can use a selector expression, with the character ".".
+
+```go
+hotel := Hotel{
+    Name:    "Gopher team hotel",
+    Country: Country{
+        Name: "France",
+        CapitalCity: "Paris",
+    },
+}
+
+log.Println(hotel.Name)
+log.Println(hotel.Country.CapitalCity)
+```
 
